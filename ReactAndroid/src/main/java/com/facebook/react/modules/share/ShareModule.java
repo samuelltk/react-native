@@ -12,6 +12,10 @@ package com.facebook.react.modules.share;
 import android.app.Activity;
 import android.content.Intent;
 
+import android.net.Uri;
+import android.util.Log;
+import java.io.File;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -58,6 +62,15 @@ public class ShareModule extends ReactContextBaseJavaModule {
     try {
       Intent intent = new Intent(Intent.ACTION_SEND);
       intent.setTypeAndNormalize("text/plain");
+
+      if (content.hasKey("imgPath")) {
+          intent.setTypeAndNormalize("image/*");
+          String strPath=content.getString("imgPath");
+          File f = new File(strPath);
+          Uri u = Uri.fromFile(f);
+          Log.e("-----------",strPath);
+          intent.putExtra(Intent.EXTRA_STREAM, u);
+      }
 
       if (content.hasKey("title")) {
         intent.putExtra(Intent.EXTRA_SUBJECT, content.getString("title"));
