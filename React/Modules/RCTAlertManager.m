@@ -41,6 +41,13 @@ RCT_EXPORT_MODULE()
   return dispatch_get_main_queue();
 }
 
+RCT_EXPORT_METHOD(invalidateAllAlert)
+{
+  for (UIAlertController *alertController in _alertControllers) {
+    [alertController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+  }
+}
+
 - (void)invalidate
 {
   for (UIAlertController *alertController in _alertControllers) {
